@@ -23,6 +23,8 @@ const newCycleFormValidationSchema = zod.object({
     .max(60, 'O ciclo precisa ser de no máximo 60 minutos'),
 })
 
+const defaultDocumentTitle = document.title
+
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 
 interface Cycle {
@@ -56,14 +58,26 @@ export function Home() {
   const seconds = String(secondsAmount).padStart(2, '0')
 
   useEffect(() => {
+    let interval: number
+
     if (activeCycle) {
-      setInterval(() => {
+      interval = setInterval(() => {
         setAmountSecondsPassed(
           differenceInSeconds(new Date(), activeCycle.startDate),
         )
       }, 1000)
     }
+
+    return () => {
+      clearInterval(interval)
+    }
   }, [activeCycle])
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${minutes}:${seconds} | ${defaultDocumentTitle}`
+    }
+  }, [minutes, seconds, activeCycle])
 
   function handleCreateNewCycle(data: NewCycleFormData) {
     const newCycle: Cycle = {
@@ -75,6 +89,7 @@ export function Home() {
 
     setCycles((state) => [...state, newCycle])
     setActiveCycleId(newCycle.id)
+    setAmountSecondsPassed(0)
 
     reset()
   }
