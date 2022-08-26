@@ -10,7 +10,7 @@
 </p>
 
 ## <img src=".docs/label.svg" width="16px">&nbsp; Demo
-Access the demo by clicking on <a href="https://pomodoro-timer-blond.vercel.app/">this</a> link
+Access the demo by clicking on <a target="_blank" href="https://pomodoro-timer-blond.vercel.app/">this</a> link
 
 <br />
 
